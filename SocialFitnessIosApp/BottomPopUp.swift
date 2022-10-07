@@ -8,19 +8,91 @@
 import SwiftUI
 import Neumorphic
 import Foundation
+import Firebase
+import FirebaseDatabase
 
 
 struct PopUp : View {
+    
+    
     
     var body : some View {
         
         VStack {
             Text(Image(systemName: "info")).font(.system(size: 30, design: .rounded)).foregroundColor(.blue).bold()
-            Text("Actual step rate shown").font(.system(size: 20, design: .rounded))
+            Text("Actual step rate animated").font(.system(size: 20, design: .rounded))
             Text("based on today's data").font(.system(size: 20, design: .rounded))
             
             
-        }.padding().background(Color.Neumorphic.main).cornerRadius(15)
+            
+            
+        }.padding().background(Color.Neumorphic.main).cornerRadius(30)
          
     }
 }
+
+
+struct PopUp2 : View {
+    
+    @Binding var backToLogin : Bool
+    @Binding var metric : Bool
+    
+    var body : some View {
+        
+        VStack(spacing: 20) {
+            
+            
+            Button(action: {    //do offset
+                let impact = UIImpactFeedbackGenerator(style: .medium)
+                impact.impactOccurred()
+                let firebaseAuth = Auth.auth()
+                do {
+                    try firebaseAuth.signOut()
+                    Login().login = false
+                    backToLogin = true
+                } catch let signOutError as NSError {
+                    print("Error signing out: %@", signOutError)
+                }
+                
+                
+                
+            }) {
+                Text("Log out ").fontWeight(.bold)
+                + Text(Image(systemName: "door.left.hand.open")).font(.system(size: 20)).bold()
+                
+            }.softButtonStyle(Capsule(), pressedEffect: .hard)
+            
+            
+            Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .medium)
+                impact.impactOccurred()
+                self.metric.toggle()
+                
+                
+            }) {
+                if self.metric == false{
+                    Text("Units: Imperial").fontWeight(.bold)
+                    
+                }
+                if self.metric {
+                    Text("Units: Metric").fontWeight(.bold)
+                }
+                
+            }.softButtonStyle(Capsule(), pressedEffect: .hard)
+           
+            
+            
+            
+            
+            
+            
+            
+        }.padding(30).background(Color.Neumorphic.main).cornerRadius(30)
+         
+    }
+}
+
+
+
+
+

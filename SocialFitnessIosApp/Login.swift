@@ -22,6 +22,7 @@ struct Login : View {
     @FocusState private var keyboard : Bool
     private let database = Database.database().reference()
     @State var fitness : main = main()
+    @Environment(\.openURL) var openURL
     
     var body : some View {
         if login {
@@ -53,7 +54,7 @@ struct Login : View {
                     
                     HStack { //password
                         Text(Image(systemName: "key")).foregroundColor(Color.Neumorphic.secondary).font(Font.body.weight(.bold))
-                        TextField("Password", text: $password).autocapitalization(.none).foregroundColor(Color.Neumorphic.secondary).focused($keyboard).font(.system(size: 18, design: .rounded))
+                        SecureField("Password", text: $password).autocapitalization(.none).foregroundColor(Color.Neumorphic.secondary).focused($keyboard).font(.system(size: 18, design: .rounded))
                     }.offset(x: 43)
                         .padding()
                         .background(
@@ -62,7 +63,7 @@ struct Login : View {
                         )
                     
                     
-                    VStack{ // sign up
+                    VStack(spacing: 33){ // sign up
                         
                         Button(action: {
                             
@@ -77,9 +78,9 @@ struct Login : View {
                         }
                         .softButtonStyle(RoundedRectangle(cornerRadius: 20))
                         
-                    }.padding()
                     
-                    VStack{ // login
+                    
+                     // login
                         
                         Button(action: {
                             
@@ -94,7 +95,11 @@ struct Login : View {
                         }
                         .softButtonStyle(RoundedRectangle(cornerRadius: 20))
                         
+                        
+                        
                     }.padding()
+                    
+                    
                     
                     
                     
@@ -109,16 +114,31 @@ struct Login : View {
                                 "speed"   : 0.0
                             ]
                             
-                            self.database.child(loginCreds.UID).setValue(object)
+                            self.database.child("TotalRankings").child(loginCreds.UID).setValue(object)
                             login.toggle()
                         }
                     }
                 }
-                Text(errorMsg).font(.system(size: 15, design: .rounded)).offset(y: 300)
+                Text(errorMsg).font(.system(size: 15, design: .rounded)).offset(y: 230)
+                VStack{
+                    
+                    Button(action: {
+                        
+                        let impact = UIImpactFeedbackGenerator(style: .medium)
+                        impact.impactOccurred()
+                        openURL(URL(string: "https://activeneu.weebly.com/")!)
+                        
+                    }) {
+                        Text("Privacy Policy").fontWeight(.bold)
+                    }
+                    .softButtonStyle(RoundedRectangle(cornerRadius: 20))
+                    
+                    
+                }.offset(y: 280)
                 
             }
             
-            
+           
         
         
     }
@@ -164,10 +184,12 @@ class creds : ObservableObject {
     
     @Published var UID : String
     @Published var email : String
+    @Published var groupID : Int
     
     init() {
         self.UID = ""
         self.email = ""
+        self.groupID = UserDefaults.standard.integer(forKey: "GroupID")
     }
 }
 

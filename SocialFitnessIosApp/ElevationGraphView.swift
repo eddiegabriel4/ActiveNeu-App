@@ -28,16 +28,16 @@ struct ElevationGraphView : View {
                     
                     ZStack(alignment: .bottom){
                         RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main)
-                            .softInnerShadow(RoundedRectangle(cornerRadius: 20), darkShadow: Color.Neumorphic.darkShadow, lightShadow: Color.Neumorphic.lightShadow, spread: 0.3, radius: 2)
+                            
                             .frame(width: 16, height:120)
                         
                         ZStack(alignment: .bottom) {
                             
                             RoundedRectangle(cornerRadius: 20).fill(.orange)
                                 .frame(width: 16, height: item.animate ? ((item.flights) * (getRatio(max: maximum))) : 0)
-                            if item.getFlightsAsInt() != 0 {
+                            
                                 Text("\(item.getFlightsAsInt())").font(.system(size: 10, design: .rounded)).foregroundColor(.black).bold().offset(y: -4)
-                            }
+                            
                             
                         }
                     }
@@ -164,12 +164,12 @@ class FlightsClimbed : ObservableObject {
         
         if flights <= 18 && flights > 0 {
         
-            return String("Leaning Tower of Piza")
+            return String("Leaning Twr of Pisa")
             
         }
         if flights <= 44 && flights > 18{
             
-            return String("Great Pyramid of Giza")
+            return String("Great Pyramid")
             
         }
         if flights <= 105 && flights > 44 {

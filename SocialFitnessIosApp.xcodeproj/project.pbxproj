@@ -11,6 +11,9 @@
 		AD22A08328C9E5FF00A176C8 /* Walking2.json in Resources */ = {isa = PBXBuildFile; fileRef = AD22A08228C9E5FF00A176C8 /* Walking2.json */; };
 		AD22A08528D95BB700A176C8 /* StepLengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD22A08428D95BB600A176C8 /* StepLengthView.swift */; };
 		AD22A08728DAF21800A176C8 /* SocialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD22A08628DAF21800A176C8 /* SocialView.swift */; };
+		AD3692FB28E0FCC0001859FC /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3692FA28E0FCC0001859FC /* SideBar.swift */; };
+		AD3692FD28E413DE001859FC /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3692FC28E413DE001859FC /* Group.swift */; };
+		AD3692FF28EE7244001859FC /* GroupCreate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD3692FE28EE7244001859FC /* GroupCreate.swift */; };
 		AD45449228DBA46000AADA36 /* BottomPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD45449128DBA46000AADA36 /* BottomPopUp.swift */; };
 		AD45449428DBCED300AADA36 /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD45449328DBCED300AADA36 /* Login.swift */; };
 		AD45449628DBF3DA00AADA36 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD45449528DBF3DA00AADA36 /* Loading.swift */; };
@@ -42,6 +45,9 @@
 		AD22A08228C9E5FF00A176C8 /* Walking2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Walking2.json; sourceTree = "<group>"; };
 		AD22A08428D95BB600A176C8 /* StepLengthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepLengthView.swift; sourceTree = "<group>"; };
 		AD22A08628DAF21800A176C8 /* SocialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialView.swift; sourceTree = "<group>"; };
+		AD3692FA28E0FCC0001859FC /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		AD3692FC28E413DE001859FC /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		AD3692FE28EE7244001859FC /* GroupCreate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreate.swift; sourceTree = "<group>"; };
 		AD45449128DBA46000AADA36 /* BottomPopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomPopUp.swift; sourceTree = "<group>"; };
 		AD45449328DBCED300AADA36 /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		AD45449528DBF3DA00AADA36 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
@@ -109,8 +115,11 @@
 				AD9CD00028BC6F31003C48F6 /* ContentView.swift */,
 				AD22A08628DAF21800A176C8 /* SocialView.swift */,
 				AD45449328DBCED300AADA36 /* Login.swift */,
+				AD3692FC28E413DE001859FC /* Group.swift */,
+				AD3692FE28EE7244001859FC /* GroupCreate.swift */,
 				AD45449528DBF3DA00AADA36 /* Loading.swift */,
 				AD22A08428D95BB600A176C8 /* StepLengthView.swift */,
+				AD3692FA28E0FCC0001859FC /* SideBar.swift */,
 				AD45449128DBA46000AADA36 /* BottomPopUp.swift */,
 				AD9CD00E28BC71E7003C48F6 /* RingView.swift */,
 				AD9CD01C28BEE728003C48F6 /* TestView.swift */,
@@ -237,6 +246,8 @@
 			files = (
 				AD45449228DBA46000AADA36 /* BottomPopUp.swift in Sources */,
 				AD9CD01D28BEE728003C48F6 /* TestView.swift in Sources */,
+				AD3692FB28E0FCC0001859FC /* SideBar.swift in Sources */,
+				AD3692FD28E413DE001859FC /* Group.swift in Sources */,
 				AD45449628DBF3DA00AADA36 /* Loading.swift in Sources */,
 				AD22A08728DAF21800A176C8 /* SocialView.swift in Sources */,
 				AD45449428DBCED300AADA36 /* Login.swift in Sources */,
@@ -246,6 +257,7 @@
 				AD9CD01128BC7210003C48F6 /* StepGraphView.swift in Sources */,
 				AD22A08528D95BB700A176C8 /* StepLengthView.swift in Sources */,
 				AD9CD02C28C4B386003C48F6 /* DayNight.swift in Sources */,
+				AD3692FF28EE7244001859FC /* GroupCreate.swift in Sources */,
 				AD9CD00128BC6F31003C48F6 /* ContentView.swift in Sources */,
 				AD9CCFFF28BC6F31003C48F6 /* SocialFitnessIosAppApp.swift in Sources */,
 			);
@@ -375,18 +387,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SocialFitnessIosApp/SocialFitnessIosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"SocialFitnessIosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 33PWDZH2P2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SocialFitnessIosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ActiveNeu;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We would like to look at health data. ";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We would like to look at health data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Health data access allows us to provide you with unique insights into your activity data as well as rank you on these stats against other users.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Health data access allows us to provide you with unique insights into your activity data as well as rank you on these stats against other users.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -396,9 +409,12 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = i.SocialFitnessIosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -409,18 +425,19 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = SocialFitnessIosApp/SocialFitnessIosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"SocialFitnessIosApp/Preview Content\"";
 				DEVELOPMENT_TEAM = 33PWDZH2P2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SocialFitnessIosApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ActiveNeu;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "We would like to look at health data. ";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We would like to look at health data.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Health data access allows us to provide you with unique insights into your activity data as well as rank you on these stats against other users.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Health data access allows us to provide you with unique insights into your activity data as well as rank you on these stats against other users.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -430,9 +447,12 @@
 				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = i.SocialFitnessIosApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -18,6 +18,8 @@ struct SocialView : View {  // this will have the 3 buttons and do view control 
     
     @EnvironmentObject var LoginCreds :  creds
     
+    @Binding var metric : Bool
+    
     let impact = UIImpactFeedbackGenerator(style: .medium)
     
     var body: some View {
@@ -27,7 +29,7 @@ struct SocialView : View {  // this will have the 3 buttons and do view control 
             Color.Neumorphic.main.edgesIgnoringSafeArea(.all)
             
             VStack{
-                
+                Spacer()
                 Picker("", selection: $showingController, content: {
                     Text("Flights").tag(0)
                     Text("Steps").tag(1)
@@ -41,7 +43,7 @@ struct SocialView : View {  // this will have the 3 buttons and do view control 
                     StepsRank().offset(y: -40)
                 }
                 if showingController == 2 {
-                    SpeedRank().offset(y: -40)
+                    SpeedRank(metric: $metric).offset(y: -40)
                 }
                 
                 
@@ -68,7 +70,7 @@ struct FlightsRank : View {
             
             Color.Neumorphic.main.edgesIgnoringSafeArea(.all)
             
-            VStack (spacing: 18) {
+            VStack (spacing: 16) {
                 Text("Top 5 Users:").font(.system(size: 26, design: .rounded)).padding().bold().offset(x:-82)
                 ZStack{
                     
@@ -176,8 +178,11 @@ struct FlightsRank : View {
                         
                     }
                 }.padding().offset(x:-40)
+                Spacer()
                 
             }.onAppear {
+                
+                
                 
                 getOrderedFlights() { completion in
                     data = completion
@@ -192,7 +197,7 @@ struct FlightsRank : View {
         let data : RankingDataHolder = RankingDataHolder()
         var entry : Array<Double> = Array()
         let ref = Database.database().reference()
-        let query = ref.queryOrdered(byChild: "flights")
+        let query = ref.child("TotalRankings").queryOrdered(byChild: "flights")
         
         query.observeSingleEvent(of: .value) {
             snapshot, x  in
@@ -234,7 +239,7 @@ struct StepsRank : View {
             
             Color.Neumorphic.main.edgesIgnoringSafeArea(.all)
             
-            VStack (spacing: 18) {
+            VStack (spacing: 16) {
                 Text("Top 5 Users:").font(.system(size: 26, design: .rounded)).padding().bold().offset(x:-82)
                 ZStack{
                     
@@ -342,6 +347,7 @@ struct StepsRank : View {
                         
                     }
                 }.padding().offset(x:-40)
+                Spacer()
                 
             }.onAppear {
                 
@@ -358,7 +364,7 @@ struct StepsRank : View {
         let data : RankingDataHolder = RankingDataHolder()
         var entry : Array<Double> = Array()
         let ref = Database.database().reference()
-        let query = ref.queryOrdered(byChild: "steps")
+        let query = ref.child("TotalRankings").queryOrdered(byChild: "steps")
         
         query.observeSingleEvent(of: .value) {
             snapshot, x  in
@@ -390,6 +396,7 @@ struct StepsRank : View {
 
 struct SpeedRank : View {
     @State var data : RankingDataHolder = RankingDataHolder()
+    @Binding var metric : Bool
     @EnvironmentObject var LoginCreds :  creds
     
     var body : some View {
@@ -398,7 +405,7 @@ struct SpeedRank : View {
             
             Color.Neumorphic.main.edgesIgnoringSafeArea(.all)
             
-            VStack (spacing: 18) {
+            VStack (spacing: 16) {
                 Text("Top 5 Users:").font(.system(size: 26, design: .rounded)).padding().bold().offset(x:-82)
                 ZStack{
                     
@@ -407,49 +414,14 @@ struct SpeedRank : View {
                     //Text("\(data.rank)")
                     HStack(alignment: .bottom) {
                         if data.datas.count >= 5 {
-                            
-                            Text("\(String(data.datas[0]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
-                            Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
-                            
-                        }
-                        else {
-                            Text("")
-                        }
-                        
-                    }
-                }
-                
-                ZStack{
-                    
-                    RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 300, height: 70)
-                    
-                    //Text("\(data.rank)")
-                    HStack(alignment: .bottom) {
-                        if data.datas.count >= 5 {
-                            
-                            Text("\(String(data.datas[1]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
-                            Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
-                            
-                        }
-                        else {
-                            Text("")
-                        }
-                        
-                    }
-                }
-                
-                
-                
-                ZStack{
-                    
-                    RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 300, height: 70)
-                    
-                    //Text("\(data.rank)")
-                    HStack(alignment: .bottom) {
-                        if data.datas.count >= 5 {
-                            
-                            Text("\(String(data.datas[2]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
-                            Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            if metric == false {
+                                Text("\(String(data.datas[0]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
+                            else {
+                                Text("\(self.MPHMetric(input: String(data.datas[0])))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" kph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
                             
                         }
                         else {
@@ -466,9 +438,42 @@ struct SpeedRank : View {
                     //Text("\(data.rank)")
                     HStack(alignment: .bottom) {
                         if data.datas.count >= 5 {
+                            if metric == false {
+                                Text("\(String(data.datas[1]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
                             
-                            Text("\(String(data.datas[3]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
-                            Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            else {
+                                    Text("\(self.MPHMetric(input: String(data.datas[1])))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                    Text(" kph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                                }
+                            
+                            
+                        }
+                        else {
+                            Text("")
+                        }
+                        
+                    }
+                }
+                
+                
+                
+                ZStack{
+                    
+                    RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 300, height: 70)
+                    
+                    //Text("\(data.rank)")
+                    HStack(alignment: .bottom) {
+                        if data.datas.count >= 5 {
+                            if metric == false {
+                                Text("\(String(data.datas[2]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
+                            else {
+                                Text("\(self.MPHMetric(input: String(data.datas[2])))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" kph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
                             
                         }
                         else {
@@ -485,9 +490,14 @@ struct SpeedRank : View {
                     //Text("\(data.rank)")
                     HStack(alignment: .bottom) {
                         if data.datas.count >= 5 {
-                            
-                            Text("\(String(data.datas[4]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
-                            Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            if metric == false{
+                                Text("\(String(data.datas[3]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
+                            else {
+                                Text("\(self.MPHMetric(input: String(data.datas[3])))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" kph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
                             
                         }
                         else {
@@ -496,6 +506,31 @@ struct SpeedRank : View {
                         
                     }
                 }
+                
+                ZStack{
+                    
+                    RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 300, height: 70)
+                    
+                    //Text("\(data.rank)")
+                    HStack(alignment: .bottom) {
+                        if data.datas.count >= 5 {
+                            if metric == false {
+                                Text("\(String(data.datas[4]))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" mph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
+                            else {
+                                Text("\(self.MPHMetric(input: String(data.datas[4])))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple)
+                                Text(" kph today").font(.system(size: 13, design: .rounded)).bold().offset(x: -7, y: -8)
+                            }
+                            
+                        }
+                        else {
+                            Text("")
+                        }
+                        
+                    }
+                }
+                
                 VStack(alignment: .leading){
                     Text("Your ranking: ").font(.system(size: 18, design: .rounded)).bold()
                     HStack(alignment: .bottom){
@@ -506,6 +541,7 @@ struct SpeedRank : View {
                         
                     }
                 }.padding().offset(x:-40)
+                Spacer()
                 
             }.onAppear {
                 
@@ -522,7 +558,7 @@ struct SpeedRank : View {
         let data : RankingDataHolder = RankingDataHolder()
         var entry : Array<Double> = Array()
         let ref = Database.database().reference()
-        let query = ref.queryOrdered(byChild: "speed")
+        let query = ref.child("TotalRankings").queryOrdered(byChild: "speed")
         
         query.observeSingleEvent(of: .value) {
             snapshot, x  in
@@ -548,6 +584,15 @@ struct SpeedRank : View {
             
         }
         
+        
+    }
+    
+    func MPHMetric(input: String) -> String {
+        let mph = Double(input)
+        let kmh = mph! * 1.6
+        
+        let value2 = Double(round(kmh * 10) / 10)
+        return trailingZeroes(input: value2)
         
     }
     
@@ -578,11 +623,7 @@ class RankingDataHolder {
 
 
 
-
-
-struct social_preview : PreviewProvider {
-    static var previews: some View {
-
-        SocialView().previewDevice(PreviewDevice(rawValue: "iPhone 12 Pro")).environment(\.colorScheme, .light)
-    }
+func trailingZeroes(input: Double) -> String {
+    let x = String(format: "%g", input)
+    return x
 }

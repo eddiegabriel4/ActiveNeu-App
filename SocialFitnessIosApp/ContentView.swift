@@ -27,10 +27,16 @@ struct ContentView: View {
     @EnvironmentObject var loginCreds : creds
     @State var showSocialView = false
     @State var show = false
+    @State var showMenu = false
     @State private var backToLogin = false
     @EnvironmentObject var dimensions : dimensions
     @State var scaleFactor : Double = 1.0
     @State var scooch  = 0
+    @State var metric = false
+    @State var showGroup = false
+    
+    
+    
     
     
     var body: some View {
@@ -43,144 +49,162 @@ struct ContentView: View {
         }
     }
     var content : some View {
+        
+        
        
         
         ZStack{
             
+           
             
-            
-            NavigationView{
+            ZStack {
                 
                 
-                ZStack {
+                
+                Color.Neumorphic.main.edgesIgnoringSafeArea(.all)
+                
+                
+                
+                VStack(spacing: dimensions.height / 43) {
                     
-                    Color.Neumorphic.main.edgesIgnoringSafeArea(.all)
+            
                     
                     
-                    
-                    VStack(spacing: 14) {
-                        
-                    
-                        
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
-                            HStack{
-                                
-                                ZStack{
-                                    Circle().fill(Color.Neumorphic.main).softOuterShadow().frame(width: 110, height: 110).frame(width:100, height: 100)
-                                    RingBigView(fitness: fitness, ringInfo: $ringData).frame(width: 45, height: 45)
-                                }
-                                
-                                RingNumbersView(fitness: fitness, ActivitySummary: $ringData).padding()
-                                
-                                
-                                RingNumbersViewYesterday(fitness: fitness, ActivitySummary: $ringDataYesterDay).padding(.leading, 42)
-                            }
-                        }
-                        
-                        ZStack {
-                            
-                            RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
-                            ElevationView(fitness: fitness, elevationData: elevationData).offset(x: -(((dimensions.width - 50) / 2) - 174))
-                            ElevationGraphView(fitness: fitness, localFlightsClimbed: elevationData.getElevationWeekData()).frame(width: 50, height: 20).offset(x: 87 + ((dimensions.width - 50) / 2 ) - 174 , y: 9)
-                            
-                        }
-                        
-                        ZStack{
-                            
-                            RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
-                            
-                            
-                            
-                            RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 180, height: 10).offset(y: 27.5)
-                            
-                            WalkingPerson().frame(width: 20, height: 20).offset(x: -10)
-                            
-                            StepLengthView(fitness: fitness).offset(y: 58).offset(x: 0)
-                            
-                            ZStack {
-                                Circle().fill(Color.Neumorphic.main).softOuterShadow().frame(width: 40, height: 40)
-                                Text(Image(systemName: "figure.walk")).font(.system(size: 24, design: .rounded)).bold().offset(y: -1)
-                            }.offset(x: -144 - (((dimensions.width - 50) / 2) - 174), y: -51)
-                            
-                            
-                            
-                            
-                            
-                            Button(action: {
-                                let impact = UIImpactFeedbackGenerator(style: .medium)
-                                impact.impactOccurred()
-                                withAnimation {
-                                    self.show.toggle()
-                                }
-                                
-                            }, label: {Text(Image(systemName: "info")).font(.system(size: 19, design: .rounded)).bold().foregroundColor(.blue)}).softButtonStyle(Circle(), pressedEffect: .hard).offset(x: 140 + ((dimensions.width - 50) / 2 ) - 174 , y: 49)
-                            
-                        }
-                        
-                        ZStack{
-                            RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
-                            
-                            StepsViewHour(fitness : fitness).offset(x: -(((dimensions.width - 50) / 2) - 174))
-                            
-                            StepGraphHourly(fitness: fitness, localHourStepInfo: hourlySteps.Steps48HrArray).frame(width: 540, height: 160).offset(x: 85 + ((dimensions.width - 50) / 2 ) - 174, y: 0)
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 125)
+                        HStack{
                             
                             ZStack{
-                                Circle().fill(Color.Neumorphic.main).softOuterShadow().frame(width: 70, height: 70).frame(width:0, height: 0)
-                                    .offset(x:-73, y:25)
-                                DayNightTransition().offset(x: 17 , y: 25)
-                            }.offset(x: -(((dimensions.width - 50) / 2) - 174) - 6)
-                            
-                        }
-                        ZStack(alignment: .bottom) {
-                            HStack(spacing: 60){
-                                
-                                
-                                
-                                Button(action: {    //do offset
-                                    let impact = UIImpactFeedbackGenerator(style: .medium)
-                                    impact.impactOccurred()
-                                    let firebaseAuth = Auth.auth()
-                                    do {
-                                        try firebaseAuth.signOut()
-                                        Login().login = false
-                                        backToLogin = true
-                                    } catch let signOutError as NSError {
-                                        print("Error signing out: %@", signOutError)
-                                    }
-                                    
-                                    
-                                    
-                                }) {
-                                    Text("Log out ").fontWeight(.bold)
-                                    + Text(Image(systemName: "door.left.hand.open")).font(.system(size: 20)).bold()
-                                    
-                                }.softButtonStyle(Capsule(), pressedEffect: .hard)
-                                
-                                
-                                Button(action: {
-                                    let impact = UIImpactFeedbackGenerator(style: .medium)
-                                    impact.impactOccurred()
-                                    self.showSocialView = true
-                                    
-                                    
-                                }) {
-                                    Text("Rankings ").fontWeight(.bold)
-                                    + Text(Image(systemName: "chart.bar.fill")).font(.system(size: 20)).bold()
-                                    
-                                }.softButtonStyle(Capsule(), pressedEffect: .hard).sheet(isPresented: $showSocialView, content: {
-                                    SocialView()
-                                })
-                                
+                                Circle().fill(Color.Neumorphic.main).softOuterShadow().frame(width: 110, height: 110).frame(width:100, height: 100)
+                                RingBigView(fitness: fitness, ringInfo: $ringData).frame(width: 45, height: 45)
                             }
-                        }.padding(6).offset(y: CGFloat(scooch))
-                    }.scaleEffect(scaleFactor)
+                            
+                            RingNumbersView(fitness: fitness, ActivitySummary: $ringData).padding()
+                            
+                            
+                            RingNumbersViewYesterday(fitness: fitness, ActivitySummary: $ringDataYesterDay).padding(.leading, 20)
+                        }
+                    }
                     
+                    ZStack {
+                        
+                        RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
+                        ElevationView(fitness: fitness, elevationData: elevationData).offset(x: -(((dimensions.width - 50) / 2) - 174))
+                        ElevationGraphView(fitness: fitness, localFlightsClimbed: elevationData.getElevationWeekData()).frame(width: 50, height: 20).offset(x: 87 + ((dimensions.width - 50) / 2 ) - 174 , y: 9)
                         
                     }
                     
+                    ZStack{
+                        
+                        RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
+                        
+                        
+                        
+                        RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 180, height: 10).offset(y: 27.5)
+                        
+                        WalkingPerson().frame(width: 20, height: 20).offset(x: -10)
+                        
+                        StepLengthView(fitness: fitness, metric: $metric).offset(y: 58).offset(x: 0)
+                        
+                        ZStack {
+                            Circle().fill(Color.Neumorphic.main).softOuterShadow().frame(width: 40, height: 40)
+                            Text(Image(systemName: "figure.walk")).font(.system(size: 24, design: .rounded)).bold().offset(y: -1)
+                        }.offset(x: -144 - (((dimensions.width - 50) / 2) - 174), y: -51)
+                        
+                        
+                        
+                        
+                        
+                        Button(action: {
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            withAnimation {
+                                self.show.toggle()
+                            }
+                            
+                        }, label: {Text(Image(systemName: "info")).font(.system(size: 19, design: .rounded)).bold().foregroundColor(.blue)}).softButtonStyle(Circle(), pressedEffect: .hard).offset(x: 140 + ((dimensions.width - 50) / 2 ) - 174 , y: 49)
+                        
+                    }
+                    
+                    ZStack{
+                        RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 160)
+                        
+                        StepsViewHour(fitness : fitness).offset(x: -(((dimensions.width - 50) / 2) - 174))
+                        
+                        StepGraphHourly(fitness: fitness, localHourStepInfo: hourlySteps.Steps48HrArray).frame(width: 540, height: 160).offset(x: 85 + ((dimensions.width - 50) / 2 ) - 174, y: 0)
+                        
+                        ZStack{
+                            Circle().fill(Color.Neumorphic.main).softOuterShadow().frame(width: 70, height: 70).frame(width:0, height: 0)
+                                .offset(x:-73, y:25)
+                            DayNightTransition().offset(x: 17 , y: 25)
+                        }.offset(x: -(((dimensions.width - 50) / 2) - 174) - 6)
+                        
+                    }
+                    HStack(spacing: 13){
+                        
+                        
+                        
+                        Button(action: {
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            self.showGroup = false
+                            self.showSocialView = true
+                            
+                            
+                        }) {
+                            Text("Rankings ").fontWeight(.bold)
+                            + Text(Image(systemName: "chart.bar.fill")).font(.system(size: 20)).bold()
+                            
+                        }.softButtonStyle(Capsule(), pressedEffect: .hard).sheet(isPresented: $showSocialView, content: {
+                            SocialView(metric: $metric)
+                        })
+                        
+                        
+                        Button(action: {
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            withAnimation {
+                                self.showMenu.toggle()
+                            }
+                            
+                        }, label: {Text(Image(systemName: "line.3.horizontal")).font(.system(size: 19, design: .rounded)).bold().foregroundColor(.gray)}).softButtonStyle(Circle(), pressedEffect: .hard)
+                        
+                        
+                        
+                        
+                        
+                        Button(action: {
+                            let impact = UIImpactFeedbackGenerator(style: .medium)
+                            impact.impactOccurred()
+                            self.showGroup = true
+                            
+                            
+                        }) {
+                            Text("Groups ").fontWeight(.bold)
+                            + Text(Image(systemName: "person.3.fill")).font(.system(size: 20)).bold()
+                            
+                        }.softButtonStyle(Capsule(), pressedEffect: .hard).sheet(isPresented: $showGroup, content: {
+                            GroupCreate(metric: $metric)
+                        })
+
+                        
+                        
+                        
+                        
+                        
+                        
+                    }
+                    
+                    
+                    
+                    
+                }.scaleEffect(scaleFactor)
                 
-            }.onAppear() {
+                
+            }
+            
+            
+            .onAppear() {
                 if dimensions.height < 680 {
                     scaleFactor = 0.9
                     scooch = -17
@@ -193,8 +217,10 @@ struct ContentView: View {
             }
             if self.show {
                 
-                GeometryReader { _ in
-                    PopUp().position(x: dimensions.width / 2, y: (dimensions.height / 2) - 50)
+                GeometryReader { ok in
+                    
+                    PopUp().position(x: ok.size.width / 2, y: ok.size.height / 2)
+                    
                     
                 }.background(Color.black.opacity(0.1).edgesIgnoringSafeArea(.all)
                     .onTapGesture {
@@ -204,11 +230,29 @@ struct ContentView: View {
                     }
                 )
             }
+            
+            if self.showMenu == true {
+                VisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialLight)).edgesIgnoringSafeArea(.all)
+            }
+            if self.showMenu {
+                
+                GeometryReader { ok in
+                    PopUp2(backToLogin: $backToLogin, metric: $metric).position(x: (ok.size.width / 2), y: (ok.size.height / 2))
+                    
+                }.background(Color.black.opacity(0.1).edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        withAnimation {
+                            self.showMenu.toggle()
+                        }
+                    }
+                )
+            }
+        }
         }
             
     }
         
-    }
+    
     
 
 
@@ -343,7 +387,10 @@ struct ElevationView : View {
         }.frame(width: 400, height: 150).onAppear() {
             fitness.RecieveFlightsClimbed() { summary in
                     elevationData.flights = summary!.flights
-                self.database.child(loginCreds.UID).child("flights").setValue(summary!.flights)
+                self.database.child("TotalRankings").child(loginCreds.UID).child("flights").setValue(Int(summary!.flights))
+                if self.loginCreds.groupID != 0 {
+                    self.database.child("Groups").child(String(self.loginCreds.groupID)).child("members").child(self.loginCreds.UID).child("flights").setValue(Int(summary!.flights))
+                }
                     
             }
             
@@ -374,14 +421,19 @@ struct StepsViewHour : View {
                         Text(" in past day").font(.system(size: 13, design: .rounded)).bold()
                         
                     }
-                }.offset(x: 22)
+                }.offset(x: 24)
             
         }.offset(x: -95, y: -50).onAppear() {
             fitness.RecieveHourlySteps() { summary in
                 hrSteps = summary
                 total = Int(summary.steps)
-                self.database.child(loginCreds.UID).child("steps").setValue(summary.steps)
+                self.database.child("TotalRankings").child(loginCreds.UID).child("steps").setValue(summary.steps)
+                
+                if self.loginCreds.groupID != 0 {
+                    self.database.child("Groups").child(String(self.loginCreds.groupID)).child("members").child(self.loginCreds.UID).child("steps").setValue(summary.steps)
+                }
             }
+            
             
         }
         
