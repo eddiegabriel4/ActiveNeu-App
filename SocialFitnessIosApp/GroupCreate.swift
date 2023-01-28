@@ -43,7 +43,7 @@ struct GroupCreate : View {
                     )
                     HStack {
                         Text(Image(systemName: "person")).foregroundColor(Color.Neumorphic.secondary).font(Font.body.weight(.bold))
-                        TextField("name to be seen as", text: $userName).autocapitalization(.none).foregroundColor(Color.Neumorphic.secondary).font(.system(size: 18, design: .rounded)).focused($keyboard).autocorrectionDisabled(true)
+                        TextField("your username in group", text: $userName).autocapitalization(.none).foregroundColor(Color.Neumorphic.secondary).font(.system(size: 18, design: .rounded)).focused($keyboard).autocorrectionDisabled(true)
                     }.offset(x: 43).padding().background(
                         RoundedRectangle(cornerRadius: 30).fill(Color.Neumorphic.main)
                             .softInnerShadow(RoundedRectangle(cornerRadius: 30), darkShadow: Color.Neumorphic.darkShadow, lightShadow: Color.Neumorphic.lightShadow, spread: 0.5, radius: 2).frame(width: 340)
@@ -162,7 +162,8 @@ struct GroupCreate : View {
                                             RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: 300, height: 70)
                                             
                                             if self.metric == false {
-                                                Text("\(step.name):").font(.system(size: 18, design: .rounded)).bold() + Text(" \(self.trailingZeroes(input: step.speed))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.blue) + Text(" mph").font(.system(size: 18, design: .rounded)).bold()
+                                        
+                                                Text("\(step.name):").font(.system(size: 18, design: .rounded)).bold() + Text(" \(self.trailingZeroes(input: step.speed))").font(.system(size: 45, design: .rounded)).bold().foregroundColor(.purple) + Text(" mph").font(.system(size: 18, design: .rounded)).bold()
                                             }
                                             else {
                                                 
@@ -186,6 +187,8 @@ struct GroupCreate : View {
                             Button(action: {
                                 let impact = UIImpactFeedbackGenerator(style: .medium)
                                 impact.impactOccurred()
+                                database.child("Groups").child(String(loginCreds.groupID)).child("members").child(loginCreds.UID).removeValue()
+                                database.child("Groups").child(String(loginCreds.groupID)).child("allowed").child(loginCreds.UID).removeValue()
                                 self.loginCreds.groupID = 0
                                 UserDefaults.standard.set(0, forKey: "GroupID")
                                 self.showNoGroup = true
@@ -196,6 +199,7 @@ struct GroupCreate : View {
                             }) {
                                 Text("Leave Group ").fontWeight(.bold)
                                 + Text(Image(systemName: "door.left.hand.open")).font(.system(size: 20)).bold()
+                                
                                 
                             }.softButtonStyle(Capsule(), pressedEffect: .hard)
                             
@@ -244,13 +248,17 @@ struct GroupCreate : View {
             query.observeSingleEvent(of: .value) {
                 snapshot, x  in
                 for child in snapshot.children {
-                    let snap = child as! DataSnapshot
+                    guard let snap = child as? DataSnapshot else {
+                        return
+                    }
                     
                     
-                    let stepsDict = snap.value as! [String : Any]
+                    guard let stepsDict = snap.value as? [String : Any] else {
+                        return
+                    }
                     let steps = stepsDict["steps"]!
                     let name = stepsDict["name"]!
-                    var keeper = GroupSteps(name: name as! String, steps: steps as! Int)
+                    var keeper = GroupSteps(name: name as! String, steps: (steps as? NSNumber)?.intValue ?? 0)
                     entry.append(keeper)
                     
                 }

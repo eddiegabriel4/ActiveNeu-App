@@ -32,7 +32,7 @@ struct GroupSetUpView : View {
                 VStack (spacing: 15){
                 HStack{
                     Text(Image(systemName: "person")).foregroundColor(Color.Neumorphic.secondary).font(Font.body.weight(.bold))
-                    TextField("name to be seen as", text: $userName).autocapitalization(.none).foregroundColor(Color.Neumorphic.secondary).font(.system(size: 18, design: .rounded))
+                    TextField("your username in group", text: $userName).autocapitalization(.none).foregroundColor(Color.Neumorphic.secondary).font(.system(size: 18, design: .rounded))
                 }.offset(x: 43).padding()
                     .background(
                         RoundedRectangle(cornerRadius: 30).fill(Color.Neumorphic.main)

@@ -36,6 +36,8 @@ struct PopUp2 : View {
     
     @Binding var backToLogin : Bool
     @Binding var metric : Bool
+    @EnvironmentObject var loginCreds : creds  // not sure if information is carried over
+    
     
     var body : some View {
         
@@ -77,6 +79,38 @@ struct PopUp2 : View {
                 if self.metric {
                     Text("Units: Metric").fontWeight(.bold)
                 }
+                
+            }.softButtonStyle(Capsule(), pressedEffect: .hard)
+            
+            
+            Button(action: {
+                let impact = UIImpactFeedbackGenerator(style: .medium)
+                impact.impactOccurred()
+                let user = Auth.auth().currentUser
+                let firebaseAuth = Auth.auth()
+                let database = Database.database().reference()
+                do {
+                    user?.delete { error in
+                        if let error = error {
+                            
+                        }
+                        else {
+                            print("account deleted")
+                        }
+                    }
+                    database.child("TotalRankings").child(loginCreds.UID).removeValue()
+                    try firebaseAuth.signOut()
+                    Login().login = false
+                    backToLogin = true
+                } catch let signOutError as NSError {
+                    print("Error signing out: %@", signOutError)
+                }
+                
+                
+                
+            }) {
+                Text("Delete account ").fontWeight(.bold)
+                + Text(Image(systemName: "trash.fill")).font(.system(size: 20)).bold()
                 
             }.softButtonStyle(Capsule(), pressedEffect: .hard)
            

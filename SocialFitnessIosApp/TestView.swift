@@ -26,8 +26,6 @@ struct TestView : View {
                     }.softButtonStyle(Capsule(), pressedEffect: .hard)
                 }.padding()
                 
-            
-                
                 
                 
                 HStack {

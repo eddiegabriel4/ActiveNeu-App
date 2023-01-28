@@ -24,7 +24,7 @@ struct ElevationGraphView : View {
         Text("Last 7 days").font(.system(size: 15, design: .rounded)).bold().foregroundColor(.gray).offset(x: -36, y: -75).fixedSize(horizontal: true, vertical: false)
         HStack(spacing: 6){
             
-                ForEach(data) { item in
+            ForEach(data) { item in
                     
                     ZStack(alignment: .bottom){
                         RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main)
@@ -45,7 +45,7 @@ struct ElevationGraphView : View {
                 }
             }.onAppear() {
                 fitness.RecieveFlightsClimbed() { summary in
-                        localFlightsClimbed = summary!.getElevationWeekData()
+                    localFlightsClimbed = summary!.getElevationWeekData()
                         totalFlights = summary!.flights
                         maximum = localFlightsClimbed.map{$0.flights}.max()!
                     for (index,_) in localFlightsClimbed.enumerated() {

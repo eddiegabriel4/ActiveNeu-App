@@ -34,6 +34,13 @@ struct ContentView: View {
     @State var scooch  = 0
     @State var metric = false
     @State var showGroup = false
+    @State var testmessage = ""
+    @State var stop = false
+    @State var showHeart = false
+    
+    //important!!!:
+    @StateObject var heartBridge1 = HeartRateObject()
+    //in heart.swift
     
     
     
@@ -67,8 +74,24 @@ struct ContentView: View {
                 
                 VStack(spacing: dimensions.height / 43) {
                     
-            
+                    //Text("\(heartBridge.heartRate)")
+                
+//
+//                    Button(action: {
+//                        let impact = UIImpactFeedbackGenerator(style: .medium)
+//                        impact.impactOccurred()
+//                        self.showHeart = true
+//
+//
+//                    }) {
+//                        Text("Heart ").fontWeight(.bold)
+//                        + Text(Image(systemName: "heart")).font(.system(size: 20)).bold()
+//
+//                    }.softButtonStyle(Capsule(), pressedEffect: .hard).sheet(isPresented: $showHeart, content: {
+//                        HeartVib(heartBridge: heartBridge1)
+//                    })
                     
+                    //---------------------------------
                     
                     ZStack{
                         RoundedRectangle(cornerRadius: 20).fill(Color.Neumorphic.main).softOuterShadow().frame(width: dimensions.width - 50, height: 125)
@@ -111,6 +134,17 @@ struct ContentView: View {
                             Text(Image(systemName: "figure.walk")).font(.system(size: 24, design: .rounded)).bold().offset(y: -1)
                         }.offset(x: -144 - (((dimensions.width - 50) / 2) - 174), y: -51)
                         
+                        ZStack {
+                            Button(action: {
+                                let impact = UIImpactFeedbackGenerator(style: .medium)
+                                impact.impactOccurred()
+                                self.showHeart = true
+                                
+                            }, label: {Text(Image(systemName: "heart.fill")).font(.system(size: 19, design: .rounded)).bold().foregroundColor(.red)}).softButtonStyle(Circle(), pressedEffect: .hard).sheet(isPresented: $showHeart, content: {
+                                HeartVib(heartBridge: heartBridge1)
+                            })
+                        }.offset(x: -144 - (((dimensions.width - 50) / 2) - 182), y: 42)
+                        
                         
                         
                         
@@ -140,6 +174,8 @@ struct ContentView: View {
                         }.offset(x: -(((dimensions.width - 50) / 2) - 174) - 6)
                         
                     }
+                    
+                    
                     HStack(spacing: 13){
                         
                         
@@ -192,7 +228,6 @@ struct ContentView: View {
                         
                         
                         
-                        
                     }
                     
                     
@@ -210,7 +245,10 @@ struct ContentView: View {
                     scooch = -17
                 }
                 
+                
+                
                 print(loginCreds.email) //works
+                
             }
             if self.show == true {
                 VisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialLight)).edgesIgnoringSafeArea(.all)
@@ -249,8 +287,52 @@ struct ContentView: View {
             }
         }
         }
-            
+    
+    
+    
+//    func heart_emulate() {
+//
+//        var bps = (heartBridge.heartRate / 60) * 0.8
+//        var proportion = (bps * 0.2) * 0.8
+//        var first = bps - proportion
+//
+//        //pretty sure you got the logic, now just make accurate rate from above
+//
+//        Timer.scheduledTimer(withTimeInterval: first, repeats: true) { timer in
+//
+//                let impact = UIImpactFeedbackGenerator(style: .light)
+//                impact.impactOccurred()
+//
+//                delay(proportion){
+//
+//                    let impact = UIImpactFeedbackGenerator(style: .rigid)
+//                    impact.impactOccurred()
+//
+//                }
+//
+//            var bps = (heartBridge.heartRate / 60) * 0.8
+//            var proportion = (bps * 0.2) * 0.8
+//            var first = bps - proportion
+//            if heartBridge.heartRate == Double(0.0) {
+//                timer.invalidate()
+//            }
+//
+//        }
+//    }
+    
+    
+    func delay(_ delay:Double, closure:@escaping ()->()) {
+        DispatchQueue.main.asyncAfter(
+            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
     }
+    
+    }
+
+
+    
+    
+            
+    
         
     
     
@@ -934,6 +1016,9 @@ struct LottieView : View {
     }
     
 }
+
+
+
 
 
 

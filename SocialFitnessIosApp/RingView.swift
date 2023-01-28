@@ -17,14 +17,14 @@ struct RingView : UIViewRepresentable {
     
     func makeUIView(context: Context) -> HKActivityRingView {
         
-        //fitness.authorizeHealthkit()
         
         let ringObject = HKActivityRingView()
+        ringObject.setActivitySummary(ringInfo, animated: true)
         
-        fitness.makeQuery() { summary in
-            ringInfo = summary
-            ringObject.setActivitySummary(ringInfo, animated: true)
-        }
+       // fitness.makeQuery() { summary in
+        //    ringInfo = summary
+          //  ringObject.setActivitySummary(ringInfo, animated: true)
+        //}
         
         
         return ringObject
@@ -52,6 +52,11 @@ struct RingBigView : View {
     var body : some View {
         VStack{
             RingView(fitness: fitness, ringInfo: $ringInfo).frame(width: 100, height: 100)
+        }.onAppear {
+            fitness.makeQuery() { summary in
+                ringInfo = summary
+                
+            }
         }
     }
     
